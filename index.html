@@ -1,46 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Real-time Weather Data Visualization</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/addons/p5.sound.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>TfL Strike Impact Visualization</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <style>
+    body, h1, h2, p, ul {
+      text-align: center;
+    }
+    #visualization {
+      height: 600px;
+      width: 800px;
+      margin: auto;
+    }
+    #timeSlider, .range {
+      width: 50%;
+      margin: auto;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-  <h1 id="header">Real-time Weather Data Visualization</h1>
-  <div id="process-log">
-    <h2>Process Log</h2>
-    <ul>
-      <li>Initial Setup: Created the basic HTML structure and centered the header.</li>
-      <li>Web Scraping Attempt: Tried to scrape London's weather data from Google but faced issues.</li>
-      <li>Alternative Source: Switched to BBC Weather for data scraping.</li>
-      <li>Data Display: Updated the web app to display the scraped temperature data using a p5js lib.</li>
-      <li>Visualization Analysis: The ball rotates in a clockwise ellipse with its color variant dependant on the temperature and is graded from blue, green, yellow, orange and red from low to high temperature. </li>
-      <li> The ball also moves increasingly faster with increasing temperature.</li>
-      </Li>
-    </ul>
+  <h1>TfL Strike Impact Visualization</h1>
+  <h2>Project Overview</h2>
+  <p>This project aims to visualize the impact of strikes on London's public transport system, specifically focusing on the TfL (Transport for London). The goal is to highlight the economic disparity that often leads to these strikes.</p>
+  <h2>Progress Log</h2>
+  <ul>
+    <li>Step 1: Initial Setup</li>
+    <li>Step 2: API Integration</li>
+    <li>Step 3: Visualisation Plan</li>
+    <li>Step 4: Time Slider and Marker Management ( Dynamic )</li>
+    <li>Step 5: Added Strike logic and Heat Map ( Which will show once the good folks at TfL grants me an API key )</li>
+
+  </ul>
+  <div id="visualization"></div>
+
+  
+  <!-- New Slider --> <!-- Slider might not work properly due to js dependencies -->
+  <div>
+    <span id="rangeValue">1</span>
+    <input class="range" type="range" name="" value="0" min="1" max="52" onchange="rangeSlide(this.value)" oninput="rangeSlide(this.value)"></input>
   </div>
-  <div id="weather-data">
-    <h2>Weather Data</h2>
-       <p>Temperature: <span id="temperature"></span>C</p>
-    <p>Report: <span id="title"></span></p>
-  </div>
+
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    // Fetch the JSON data from data.json
-    fetch("weather_data.json")
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize the map
+      var mymap = L.map('visualization').setView([51.505, -0.09], 13);
+      
+      // Add tile layer to the map
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(mymap);
+
+      // Initialize an empty heatmap layer
+      var heat = L.heatLayer([], {
+        radius: 25,
+        blur: 15,
+        maxZoom: 17,
+      }).addTo(mymap);
+
+      // Time slider & markers
+      var timeSlider = document.getElementById('timeSlider');
+      var markers = [];
+      timeSlider.addEventListener('input', function() {
+        // Remove existing markers
+        markers.forEach(marker => mymap.removeLayer(marker));
+        markers = [];
+        var selectedTime = timeSlider.value; // Get the selected time from the slider
+      
+        fetch(`https://api.tfl.gov.uk/Line/Mode/tube/Status?app_id=YOUR_APP_ID&app_key=YOUR_APP_KEY&time=${selectedTime}`)
+          .then(response => response.json())
+          .then(data => {
+            // Fetch logic here
+          });
+
+        // Fetch TfL API data
+        fetch('https://api.tfl.gov.uk/Line/Mode/tube/Status', {
+          headers: {
+            'Authorization': `Bearer ${yourApiKey}` // Replace 'yourApiKey' with your actual API key
+          }
+        })
         .then(response => response.json())
         .then(data => {
-            // Update the HTML elements with the data
-            document.getElementById("temperature").textContent = data.temperature;
-            document.getElementById("title").textContent = data.title;
-        })
-        .catch(error => {
-            console.error("Error fetching JSON data:", error);
-        });
-});
+          var heatData = []; // Array to hold heatmap data
+          data.forEach(line => {
+            var lat = line.lat; // Placeholders - Replace with actual data
+            var lon = line.lon; // Placeholders - Replace with actual data
+            var strikeImpact = line.strikeImpact; // Placeholders - Replace with actual data
 
+            // Update heatmap data
+            heatData.push([lat, lon, strikeImpact]);
+
+            // Update markers
+            var color = strikeImpact > 0.5 ? 'red' : 'blue'; // Color based on strike impact
+            var marker = L.marker([lat, lon], {icon: L.divIcon({className: 'marker-icon', html: '<div style="background-color:' + color + '"></div>'})}).addTo(mymap);
+            marker.bindPopup(`<b>${line.name}</b><br>Status: ${line.lineStatuses[0].statusSeverityDescription}`);
+            markers.push(marker);
+          });
+
+          // Update heatmap layer
+          heat.setLatLngs(heatData);
+        })
+        .catch(error => console.error('Error fetching TfL API:', error));
+      });
+
+      // Function for new slider
+      function rangeSlide(value) {
+        document.getElementById('rangeValue').innerHTML = value;
+      }
+    });
   </script>
-  <script src="script.js"></script>
 </body>
 </html>
