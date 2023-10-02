@@ -1,0 +1,38 @@
+## Real-time Weather Data Visualization Project Documentation
+
+### Steps Taken
+
+1. **Initial Setup**
+  - Created the initial HTML structure.
+  - Centered the header text using CSS.
+
+2. **Process Log**
+  - Added a Process Log section in the HTML to document each step.
+
+3. **Web Scraping Attempt**
+  - Tried to scrape weather data from Google Search results using Python and BeautifulSoup.
+  - Encountered an issue where the scraped data was not found.
+
+### Issues Faced
+
+1. **Web Scraping Failure**
+  - Google's search results are dynamically generated and may require JavaScript to load, which the `requests` library can't handle.
+  - Google has mechanisms to detect and block scraping attempts. 
+  - Used user agent string
+
+### Alternative Considered
+
+1. **Weather API**
+  - As an alternative to web scraping, using a weather API to fetch real-time weather data is understood.
+
+### Next Steps
+
+1. **Weather API Integration**
+  - The next step is to use a weather API to gather the required data for the project.
+
+2. **Successfully integrated Weather API and moved to Vis**
+
+### Visualisation
+
+1. **Created an animation of a ball that moves in a clockwise ellipse while changing color and speed according to temperature such that it changes from Blue to Red, with an increasing speed as it moves from Low to High Temperature**
+

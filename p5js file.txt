@@ -1,0 +1,20 @@
+function Hothot() {
+  this.angle = 0;
+  this.radius = 50;
+  this.direction = 1;
+  this.x = width / 2;
+  this.y = height / 2;
+
+  this.move = function(speedVar) {
+    this.speed = map(speedVar, 55, 61, 0.01, 0.05);
+    this.angle += this.speed;
+    this.radius += this.direction;
+    
+    // Make the circle spiral outward and then inward
+    if (this.radius >= 100 || this.radius <= 50) {
+      this.direction *= -1;
+    }
+    
+    this.x = width / 2 + cos(this.angle) * this.radius;
+    this.y = height / 2 + sin(this.angle) * this.radius;
+  };

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real-time Weather Data Visualization</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/addons/p5.sound.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1 id="header">Real-time Weather Data Visualization</h1>
+  <div id="process-log">
+    <h2>Process Log</h2>
+    <ul>
+      <li>Initial Setup: Created the basic HTML structure and centered the header.</li>
+      <li>Web Scraping Attempt: Tried to scrape London's weather data from Google but faced issues.</li>
+      <li>Alternative Source: Switched to BBC Weather for data scraping.</li>
+      <li>Data Display: Updated the web app to display the scraped temperature data using a p5js lib.</li>
+      <li>Visualization Analysis: The ball rotates in a clockwise ellipse with its color variant dependant on the temperature and is graded from blue, green, yellow, orange and red from low to high temperature. </li>
+      <li> The ball also moves increasingly faster with increasing temperature.</li>
+      </Li>
+    </ul>
+  </div>
+  <div id="weather-data">
+    <h2>Weather Data</h2>
+       <p>Temperature: <span id="temperature"></span>C</p>
+    <p>Report: <span id="title"></span></p>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Fetch the JSON data from data.json
+    fetch("weather_data.json")
+        .then(response => response.json())
+        .then(data => {
+            // Update the HTML elements with the data
+            document.getElementById("temperature").textContent = data.temperature;
+            document.getElementById("title").textContent = data.title;
+        })
+        .catch(error => {
+            console.error("Error fetching JSON data:", error);
+        });
+});
+
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
