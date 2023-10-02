@@ -1,0 +1,51 @@
+## TfL Strike Impact Visualization Project Documentation
+
+### Project Overview
+
+This project aims to visualize the impact of strikes on London's public transport system, specifically focusing on the TfL (Transport for London). The goal is to highlight the economic disparity that often leads to these strikes.
+
+### Steps Taken
+
+1. **Initial Setup**
+  * Created the initial HTML structure for the web app.
+  * Added a "Project Overview" section to the HTML.
+
+2. **Styling and Layout**
+  * Centered the headers and project overview text using CSS.
+
+3. **Data Collection**
+  * Asked for `.xlsx` data from TfL while building the site meanwhile.
+
+4. **Dynamic Features**
+  * Added Time Slider and Marker Management (Dynamic).
+
+5. **Data Collection Failure**
+  * Failure to achieve `.xlsx` data, pivot to apply for TfL Unified API key.
+
+6. **Data Visualization**
+  * Added Strike Logic and Heat Map.
+
+### Issues Faced
+
+1. **Data Collection Failure**
+  * Failure to achieve `.xlsx` data from TfL.
+  * Pivoted to apply for a TfL Unified API key.
+
+### Alternatives Considered
+
+1. **TfL Unified API**
+  * As an alternative to `.xlsx` data, applied for a TfL Unified API key.
+
+### Next Steps
+
+1. **API Integration**
+  * The next step is to integrate the TfL Unified API to gather the required data for the project.
+
+2. **Further Visualization**
+  * Plan to add more layers to the Heat Map and possibly integrate other forms of data visualization.
+
+### Visualization
+
+1. **Heat Map and Time Slider**
+  * Created a dynamic Heat Map that changes based on the Time Slider.
+  * The Heat Map aims to show the areas most affected by strikes, thereby highlighting economic disparities.
